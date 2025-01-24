@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tattoo Price Calculator</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            background-image: url('/img.avif');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="calculator-form">
+            <h1>Tattoo Price Calculator</h1>
+            <form id="tattooForm">
+                <div class="form-group">
+                    <label for="country">Country:</label>
+                    <select id="country" name="country">
+                        <option value="united-states">United States</option>
+                        <option value="canada">Canada</option>
+                        <option value="uk">United Kingdom</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="size">Size of Tattoo (inches):</label>
+                    <input type="range" id="size" name="size" min="1" max="24" value="6">
+                    <span id="sizeValue">6 inch (15.2 cm)</span>
+                </div>
+
+                <div class="form-group">
+                    <label for="color">Color:</label>
+                    <select id="color" name="color">
+                        <option value="bw">Black & White</option>
+                        <option value="color">Full Color</option>
+                        <option value="grayscale">Grayscale</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="style">Style of Tattoo:</label>
+                    <select id="style" name="style">
+                        <option value="fineline">Fineline</option>
+                        <option value="traditional">Traditional</option>
+                        <option value="realistic">Realistic</option>
+                        <option value="tribal">Tribal</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="experience">Artist's Experience (Years):</label>
+                    <input type="range" id="experience" name="experience" min="1" max="20" value="3">
+                    <span id="experienceValue">3 years</span>
+                </div>
+
+                <div class="price-display">
+                    <h2>Estimated Price: <span id="estimatedPrice">$330.00</span></h2>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+</html> 
