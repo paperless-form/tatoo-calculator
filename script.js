@@ -27,7 +27,7 @@ document.addEventListener('DOMContentLoaded', function () {
     function updateSizeValue() {
         const cm = sizeSlider.value;
         const inches = (cm * 0.393701).toFixed(1);
-        sizeValue.textContent = `${cm} cm (${inches}")`;
+        sizeValue.textContent = `${cm} cm (${inches} inches)`;
         calculatePrice();
     }
 
@@ -96,4 +96,33 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Initial calculation
     updateSizeValue();
+
+    // Initialize Dropify
+    $('.dropify').dropify({
+        messages: {
+            default: 'Drag and drop a tattoo reference image or click to upload',
+            replace: 'Drag and drop or click to replace',
+            remove: 'Remove',
+            error: 'Error. File is too large or not an image'
+        }
+    });
+
+    // Handle estimator type switching
+    const standardOptions = document.getElementById('standard-options');
+    const aiOptions = document.getElementById('ai-options');
+    const standardRadio = document.getElementById('standard');
+    const aiRadio = document.getElementById('ai');
+
+    function toggleOptions() {
+        if (standardRadio.checked) {
+            standardOptions.style.display = 'block';
+            aiOptions.style.display = 'none';
+        } else {
+            standardOptions.style.display = 'none';
+            aiOptions.style.display = 'block';
+        }
+    }
+
+    standardRadio.addEventListener('change', toggleOptions);
+    aiRadio.addEventListener('change', toggleOptions);
 }); 
