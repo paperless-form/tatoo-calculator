@@ -1,17 +1,34 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inkjin Price Estimator</title>
     <link rel="stylesheet" href="styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="script.js" defer></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Dropify/0.2.2/css/dropify.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Dropify/0.2.2/js/dropify.min.js"></script>
 </head>
+
 <body>
+    <div class="loading-overlay">
+        <div class="celtic-loader">
+            <svg viewBox="0 0 100 100">
+                <path class="spiral" d="
+                    M 50 50
+                    m 0 -20
+                    a 20 20 0 1 0 0.1 0
+                    m 0 -10
+                    a 30 30 0 1 1 -0.1 0
+                    m 0 -10
+                    a 40 40 0 1 0 0.1 0
+                " />
+            </svg>
+        </div>
+        <p>Loading Price Estimator...</p>
+    </div>
+
     <div class="container">
         <div class="header">
             <h1>Inkjin Price Estimator</h1>
@@ -20,109 +37,156 @@
 
         <div class="calculator-form">
             <div class="form-group">
-                <label>Estimator Type</label>
-                <div class="estimator-options">
-                    <div class="estimator-option">
-                        <input type="radio" id="standard" name="estimator" checked>
-                        <label for="standard" class="estimator-label">
-                            <span class="estimator-title">Standard</span>
-                            <span class="estimator-desc">Estimator</span>
+                <label>Country</label>
+                <select class="select">
+                    <option disabled selected>Select your geographic region...</option>
+                    <option>United States</option>
+                    <option>United Kingdom</option>
+                    <option>Europe</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Style</label>
+                <select class="select">
+                    <option disabled selected>Choose your preferred artistic style...</option>
+                    <option>Traditional</option>
+                    <option>Realistic</option>
+                    <option>Geometric</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Color</label>
+                <div class="color-options">
+                    <div class="color-option">
+                        <input type="radio" id="bw" name="color" value="black" checked>
+                        <label for="bw" class="color-label">
+                            <img src="grayscale-wheel.png" alt="Black & Gray" class="color-icon">
+                            Black & gray
                         </label>
                     </div>
-                    <div class="estimator-option">
-                        <input type="radio" id="ai" name="estimator">
-                        <label for="ai" class="estimator-label">
-                            <span class="estimator-title">AI</span>
-                            <span class="estimator-desc">Estimator</span>
+                    <div class="color-option">
+                        <input type="radio" id="color" name="color" value="color">
+                        <label for="color" class="color-label">
+                            <img src="color-wheel.png" alt="Color" class="color-icon">
+                            Color (multicolor)
                         </label>
                     </div>
                 </div>
             </div>
 
-            <div id="standard-options">
-                <div class="form-group">
-                    <label>Country</label>
-                    <select>
-                        <option disabled selected>Select your geographic region...</option>
-                        <option>United States</option>
-                        <option>United Kingdom</option>
-                        <option>Europe</option>
-                    </select>
+            <div class="form-group">
+                <label>Size (cm)</label>
+                <div class="slider-container">
+                    <input type="range" min="2" max="30" value="5" class="slider" id="sizeSlider">
+                    <span class="slider-value">5 cm</span>
                 </div>
+            </div>
 
-                <div class="form-group">
-                    <label>Style</label>
-                    <select>
-                        <option disabled selected>Choose your preferred artistic style...</option>
-                        <option>Traditional</option>
-                        <option>Realistic</option>
-                        <option>Geometric</option>
-                    </select>
-                </div>
-
-                <div class="form-group">
-                    <label>Color</label>
-                    <div class="color-options">
-                        <div class="color-option">
-                            <input type="radio" id="bw" name="color" checked>
-                            <label for="bw" class="color-label">
-                                <img src="grayscale-wheel.png" alt="Black & Gray" class="color-icon">
-                                Black & gray
-                            </label>
-                        </div>
-                        <div class="color-option">
-                            <input type="radio" id="color" name="color">
-                            <label for="color" class="color-label">
-                                <img src="color-wheel.png" alt="Color" class="color-icon">
-                                Color (multicolor)
-                            </label>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label>Size (cm)</label>
-                    <div class="slider-container">
-                        <input type="range" min="2" max="30" value="5" class="slider" id="sizeSlider">
-                        <span class="slider-value">5 cm</span>
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label>Placement</label>
-                    <select>
-                        <option disabled selected>Where on your body do you want the tattoo?</option>
-                        <option>Arm</option>
-                        <option>Leg</option>
-                        <option>Back</option>
+            <div class="form-group">
+                <label>Placement</label>
+                <select>
+                    <option disabled selected>Where on your body do you want the tattoo?</option>
+                    <optgroup label="Head">
+                        <option>Cheek</option>
+                        <option>Jawline</option>
+                        <option>Chin</option>
+                        <option>Sideburns</option>
+                        <option>Temples</option>
+                        <option>Ear Lobe</option>
+                        <option>Behind Ear</option>
+                        <option>Forehead</option>
+                        <option>Scalp</option>
+                    </optgroup>
+                    <optgroup label="Neck">
+                        <option>Front Neck</option>
+                        <option>Side Neck</option>
+                        <option>Nape</option>
+                    </optgroup>
+                    <optgroup label="Torso & Midsection">
                         <option>Chest</option>
-                    </select>
-                </div>
+                        <option>Collarbone</option>
+                        <option>Sternum</option>
+                        <option>Underboob</option>
+                        <option>Upper Stomach</option>
+                        <option>Lower Stomach</option>
+                        <option>Ribcage</option>
+                        <option>Sides</option>
+                        <option>Full Front</option>
+                    </optgroup>
+                    <optgroup label="Back">
+                        <option>Upper Back</option>
+                        <option>Shoulder Blade</option>
+                        <option>Spine</option>
+                        <option>Lower Back</option>
+                        <option>Full Back</option>
+                    </optgroup>
+                    <optgroup label="Arm">
+                        <option>Shoulder</option>
+                        <option>Inner Bicep</option>
+                        <option>Outer Bicep</option>
+                        <option>Tricep</option>
+                        <option>Inner Forearm</option>
+                        <option>Outer Forearm</option>
+                        <option>Elbow</option>
+                        <option>Wrist</option>
+                        <option>Half Sleeve</option>
+                        <option>Full Sleeve</option>
+                    </optgroup>
+                    <optgroup label="Hand">
+                        <option>Top Hand</option>
+                        <option>Palm</option>
+                        <option>Knuckles</option>
+                        <option>Fingers</option>
+                    </optgroup>
+                    <optgroup label="Leg">
+                        <option>Hip</option>
+                        <option>Thigh</option>
+                        <option>Buttock</option>
+                        <option>Kneecap</option>
+                        <option>Knee Pit</option>
+                        <option>Calf</option>
+                        <option>Ankle</option>
+                        <option>Half Leg Sleeve</option>
+                        <option>Full Leg Sleeve</option>
+                    </optgroup>
+                    <optgroup label="Foot">
+                        <option>Top Foot</option>
+                        <option>Sole</option>
+                        <option>Toes</option>
+                    </optgroup>
+                    <optgroup label="Other Areas">
+                        <option>Inner Lip</option>
+                        <option>Armpit</option>
+                        <option>Pelvic Area</option>
+                    </optgroup>
+                </select>
+            </div>
 
-                <div class="form-group">
-                    <label>Artist Experience</label>
-                    <div class="experience-options">
-                        <div class="experience-option">
-                            <input type="radio" id="beginner" name="experience" checked>
-                            <label for="beginner" class="experience-label">
-                                <span class="exp-title">Beginner</span>
-                                <span class="exp-years">0-2 years</span>
-                            </label>
-                        </div>
-                        <div class="experience-option">
-                            <input type="radio" id="intermediate" name="experience">
-                            <label for="intermediate" class="experience-label">
-                                <span class="exp-title">Intermediate</span>
-                                <span class="exp-years">2-5 years</span>
-                            </label>
-                        </div>
-                        <div class="experience-option">
-                            <input type="radio" id="expert" name="experience">
-                            <label for="expert" class="experience-label">
-                                <span class="exp-title">Expert</span>
-                                <span class="exp-years">5+ years</span>
-                            </label>
-                        </div>
+            <div class="form-group">
+                <label>Artist Experience</label>
+                <div class="experience-options">
+                    <div class="experience-option">
+                        <input type="radio" id="beginner" name="experience" value="2" checked>
+                        <label for="beginner" class="experience-label">
+                            <span class="exp-title">Beginner</span>
+                            <span class="exp-years">0-2 years</span>
+                        </label>
+                    </div>
+                    <div class="experience-option">
+                        <input type="radio" id="intermediate" name="experience" value="5">
+                        <label for="intermediate" class="experience-label">
+                            <span class="exp-title">Intermediate</span>
+                            <span class="exp-years">2-5 years</span>
+                        </label>
+                    </div>
+                    <div class="experience-option">
+                        <input type="radio" id="expert" name="experience" value="6">
+                        <label for="expert" class="experience-label">
+                            <span class="exp-title">Expert</span>
+                            <span class="exp-years">5+ years</span>
+                        </label>
                     </div>
                 </div>
             </div>
@@ -130,18 +194,15 @@
             <div id="ai-options" style="display: none;">
                 <div class="form-group">
                     <label>Upload Tattoo Reference</label>
-                    <input type="file" class="dropify" data-height="200" 
-                           data-allowed-file-extensions="jpg jpeg png"
-                           data-max-file-size="2M"
-                           data-default-file=""
-                           data-message="Drag and drop a tattoo reference image or click to upload"/>
+                    <input type="file" accept="image/*" class="file-input">
                 </div>
             </div>
 
             <div class="price-display">
-                <h2>Est. Price Range: €80 - €120</h2>
+                <h2>Est. Price Range: €0 - €0</h2>
             </div>
         </div>
     </div>
 </body>
-</html> 
+
+</html>
