@@ -383,3 +383,14 @@ optgroup option {
     min-width: none;
     width: 100%;
 }
+
+.not-available-message {
+    text-align: center;
+    color: red;
+    font-size: 0.8rem;
+    margin-top: 5px;
+}
+
+.exp-status {
+    color: red;
+}

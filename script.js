@@ -5,21 +5,21 @@ document.addEventListener('DOMContentLoaded', function () {
     let apiData = []; // Store the API data globally
 
     // Get size elements
-    const sizeSlider = document.getElementById('sizeSlider');
-    const sizeValue = document.querySelector('.slider-value');
+    // const sizeSlider = document.getElementById('sizeSlider');
+    // const sizeValue = document.querySelector('.slider-value');
 
-    // Update size value display
-    function updateSizeValue() {
-        const cm = sizeSlider.value;
-        const inches = (cm * 0.393701).toFixed(1);
-        sizeValue.textContent = `${cm} cm (${inches} inches)`;
-    }
+    // // Update size value display
+    // function updateSizeValue() {
+    //     const cm = sizeSlider.value;
+    //     const inches = (cm * 0.393701).toFixed(1);
+    //     sizeValue.textContent = `${cm} cm (${inches} inches)`;
+    // }
 
-    // Add size slider event listener
-    sizeSlider.addEventListener('input', updateSizeValue);
+    // // Add size slider event listener
+    // sizeSlider.addEventListener('input', updateSizeValue);
 
     // Initial size value update
-    updateSizeValue();
+    // updateSizeValue();
 
     // Function to update available options
     function updateAvailableOptions() {
@@ -39,27 +39,72 @@ document.addEventListener('DOMContentLoaded', function () {
                 const hasColor = relevantData.some(item => item[3] !== "Black");
 
                 // Show/hide color options
+                // if (!hasBlack) {
+                //     $('#bw').closest('.color-option').hide();
+                // } else {
+                //     $('#bw').closest('.color-option').show();
+                // }
                 if (!hasBlack) {
-                    $('#bw').closest('.color-option').hide();
+                    $('#bw').closest('.color-option').find('input').prop('disabled', true);
                 } else {
-                    $('#bw').closest('.color-option').show();
+                    $('#bw').closest('.color-option').find('input').prop('disabled', false);
                 }
+
                 if (!hasColor) {
-                    $('#color').closest('.color-option').hide();
+                    $('#color').closest('.color-option').find('input').prop('disabled', true);
                 } else {
-                    $('#color').closest('.color-option').show();
+                    $('#color').closest('.color-option').find('input').prop('disabled', false);
                 }
+
+
+
+                const tiny_size = relevantData.some(item => parseInt(item[7]) >= 0 && parseInt(item[7]) <= 5);
+                const small_size = relevantData.some(item => parseInt(item[7]) >= 5 && parseInt(item[7]) <= 10);
+                const medium_size = relevantData.some(item => parseInt(item[7]) >= 10 && parseInt(item[7]) <= 20);
+                const large_size = relevantData.some(item => parseInt(item[7]) >= 20 && parseInt(item[7]) <= 40);
+
+                if (!tiny_size) {
+                    $('#sizeSelect option[value="0-5"]').prop('disabled', true)
+                } else {
+                    $('#sizeSelect option[value="0-5"]').prop('disabled', false)
+                }
+
+                if (!small_size) {
+                    $('#sizeSelect option[value="5-10"]').prop('disabled', true)
+                } else {
+                    $('#sizeSelect option[value="5-10"]').prop('disabled', false)
+                }
+
+                if (!medium_size) {
+                    $('#sizeSelect option[value="10-20"]').prop('disabled', true)
+                } else {
+                    $('#sizeSelect option[value="10-20"]').prop('disabled', false)
+                }
+
+                if (!large_size) {
+                    $('#sizeSelect option[value="20-40"]').prop('disabled', true)
+                } else {
+                    $('#sizeSelect option[value="20-40"]').prop('disabled', false)
+                }
+                $('#sizeSelect option:not([disabled]):first').prop('selected', true);
+                toolTip();
+
+
+
+
+
+
 
                 // Get size range
-                const sizes = relevantData.map(item => parseInt(item[7]));
-                const minSize = Math.min(...sizes);
-                const maxSize = Math.max(...sizes);
+                // const sizes = relevantData.map(item => parseInt(item[7]));
+                // const minSize = Math.min(...sizes);
+                // const maxSize = Math.max(...sizes);
 
-                // Update size slider
-                sizeSlider.min = minSize;
-                sizeSlider.max = maxSize;
-                sizeSlider.value = minSize;
-                updateSizeValue();
+                // // Update size slider
+                // sizeSlider.min = minSize;
+                // sizeSlider.max = maxSize;
+                // sizeSlider.value = minSize;
+                // updateSizeValue();
 
                 // Check for available experience levels
                 const experiences = relevantData.map(item => parseInt(item[9]));
@@ -69,31 +114,43 @@ document.addEventListener('DOMContentLoaded', function () {
 
                 // Show/hide experience options
                 if (!hasBeginnerExp) {
-                    $('#beginner').closest('.experience-option').hide();
+                    $('#beginner').prop('disabled', true);
+                    $('#beginner').closest('.experience-option').find('.exp-status').text('Not available');
                 } else {
-                    $('#beginner').closest('.experience-option').show();
+                    $('#beginner').prop('disabled', false);
+                    $('#beginner').closest('.experience-option').find('.exp-status').text('');
                 }
+
+
                 if (!hasIntermediateExp) {
-                    $('#intermediate').closest('.experience-option').hide();
+                    $('#intermediate').prop('disabled', true);
+                    $('#intermediate').closest('.experience-option').find('.exp-status').text('Not available');
                 } else {
-                    $('#intermediate').closest('.experience-option').show();
+                    $('#intermediate').prop('disabled', false);
+                    $('#intermediate').closest('.experience-option').find('.exp-status').text('');
                 }
+
+
                 if (!hasExpertExp) {
-                    $('#expert').closest('.experience-option').hide();
+                    $('#expert').prop('disabled', true);
+                    $('#expert').closest('.experience-option').find('.exp-status').text('Not available');
                 } else {
-                    $('#expert').closest('.experience-option').show();
+                    $('#expert').prop('disabled', false);
+                    $('#expert').closest('.experience-option').find('.exp-status').text('');
                 }
+
+
 
                 // Select the first available experience option
                 if ($('.experience-option:visible').length > 0) {
-                    $('.experience-option:visible').first().find('input[name="experience"]').prop('checked', true);
+                    $('input[name="experience"]:not([disabled]):first').prop('checked', true);
                 }
-
 
                 // Select first available option if current selection is hidden
                 if ($('.color-option:visible').length > 0) {
-                    $('.color-option:visible').first().find('input[name="color"]').prop('checked', true);
+                    $('input[name="color"]:not([disabled]):first').prop('checked', true);
                 }
+
             } else {
                 // If no relevant data found, reset the price display
                 const priceDisplay = document.querySelector('.price-display h2');
@@ -149,7 +206,8 @@ document.addEventListener('DOMContentLoaded', function () {
             updateAvailableOptions();
             calculateEstimatedPrice();
         });
-        $('input[name="color"], .slider, .experience-option').on('change', function () {
+        $('input[name="color"], #sizeSelect, .experience-option').on('change', function () {
+            toolTip()
             calculateEstimatedPrice();
         });
 
@@ -174,8 +232,9 @@ document.addEventListener('DOMContentLoaded', function () {
         const selectedCountry = $('select').first().val();
         const selectedStyle = $('select').eq(1).val();
         const selectedColor = $('input[name="color"]:checked').val();
-        const selectedSize = $('.slider').val()
+        const selectedSize = $('#sizeSelect').find(":selected").val().split('-');
         const selectedExperience = $('input[name="experience"]:checked').val();
+
 
         const priceDisplay = document.querySelector('.price-display h2');
 
@@ -185,12 +244,16 @@ document.addEventListener('DOMContentLoaded', function () {
             const relevantData = apiData.filter(item =>
                 item[0] === selectedCountry &&
                 item[1] === selectedStyle &&
+
                 (selectedColor === "black" ? item[3] === "Black" : item[3] !== "Black") &&
-                selectedSize == item[7] &&
-                ((selectedExperience == 2 && item[9] <= 2) ||
-                    (selectedExperience == 5 && item[9] >= 2 && item[9] <= 5) ||
-                    (selectedExperience == 6 && item[9] >= 5))
+                (parseInt(selectedSize[0]) <= parseInt(item[7]) && parseInt(selectedSize[1]) >= parseInt(item[7])) &&
+                ((parseInt(selectedExperience) == 2 && parseInt(item[9]) <= 2) ||
+                    (parseInt(selectedExperience) == 5 && parseInt(item[9]) >= 2 && parseInt(item[9]) <= 5) ||
+                    (parseInt(selectedExperience) == 6 && parseInt(item[9]) >= 5))
+
             );
+
+            console.log(relevantData);
 
             if (relevantData.length > 0) {
                 // Get minimum and maximum prices
@@ -238,8 +301,8 @@ document.addEventListener('DOMContentLoaded', function () {
         $('#beginner').prop('checked', true); // Check the default experience option (Beginner)
 
         // Reset size slider
-        sizeSlider.value = sizeSlider.min; // Set slider to minimum value
-        updateSizeValue(); // Update the displayed size value
+        // sizeSlider.value = sizeSlider.min; // Set slider to minimum value
+        // updateSizeValue(); // Update the displayed size value
 
         // Reset price display
         const priceDisplay = document.querySelector('.price-display h2');
@@ -248,4 +311,19 @@ document.addEventListener('DOMContentLoaded', function () {
         // Optionally, you can also call updateAvailableOptions to reset any dependent fields
         updateAvailableOptions();
     });
-}); 
+});
+
+function toolTip() {
+    if ($('#sizeSelect').find(":selected").val() == "0-5") {
+        $('#sizeTooltip').text("Small symbols, minimalistic designs, initials, small symbols like stars or hearts.");
+    } else if ($('#sizeSelect').find(":selected").val() == "5-10") {
+        $('#sizeTooltip').text("Small quotes, delicate florals, simple designs that fit on wrists, ankles, or behind the ear.");
+    } else if ($('#sizeSelect').find(":selected").val() == "10-20") {
+        $('#sizeTooltip').text("More detailed designs, such as small portraits, animal tattoos, or larger symbols like anchors or roses on the forearm or calf.");
+    } else if ($('#sizeSelect').find(":selected").val() == "20-40") {
+        $('#sizeTooltip').text("Full arm pieces, intricate nature designs, larger portraits, or detailed sleeves.");
+    }
+}
+
+
+

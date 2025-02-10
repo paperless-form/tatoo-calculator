@@ -40,9 +40,6 @@
                 <label>Country</label>
                 <select class="select">
                     <option disabled selected>Select your geographic region...</option>
-                    <option>United States</option>
-                    <option>United Kingdom</option>
-                    <option>Europe</option>
                 </select>
             </div>
 
@@ -50,9 +47,6 @@
                 <label>Style</label>
                 <select class="select">
                     <option disabled selected>Choose your preferred artistic style...</option>
-                    <option>Traditional</option>
-                    <option>Realistic</option>
-                    <option>Geometric</option>
                 </select>
             </div>
 
@@ -64,6 +58,7 @@
                         <label for="bw" class="color-label">
                             <img src="grayscale-wheel.png" alt="Black & Gray" class="color-icon">
                             Black & gray
+                            <p class="color-status"></p>
                         </label>
                     </div>
                     <div class="color-option">
@@ -76,12 +71,24 @@
                 </div>
             </div>
 
-            <div class="form-group">
+            <!-- <div class="form-group">
                 <label>Size (cm)</label>
                 <div class="slider-container">
                     <input type="range" min="2" max="30" value="5" class="slider" id="sizeSlider">
                     <span class="slider-value">5 cm</span>
                 </div>
+            </div> -->
+
+            <div class="form-group">
+                <label>Size (cm)</label>
+                <select id="sizeSelect">
+                    <option disabled selected>Choose your preferred size...</option>
+                    <option value="0-5">Tiny (0-5 cm)</option>
+                    <option value="5-10">Small (5-10 cm)</option>
+                    <option value="10-20">Medium (10-20 cm)</option>
+                    <option value="20-40">Large (20-40 cm)</option>
+                </select>
+                <span class="tooltip" id="sizeTooltip"></span>
             </div>
 
             <div class="form-group">
@@ -172,6 +179,7 @@
                         <label for="beginner" class="experience-label">
                             <span class="exp-title">Beginner</span>
                             <span class="exp-years">0-2 years</span>
+                            <span class="exp-status"></span>
                         </label>
                     </div>
                     <div class="experience-option">
@@ -179,6 +187,7 @@
                         <label for="intermediate" class="experience-label">
                             <span class="exp-title">Intermediate</span>
                             <span class="exp-years">2-5 years</span>
+                            <span class="exp-status"></span>
                         </label>
                     </div>
                     <div class="experience-option">
@@ -186,6 +195,7 @@
                         <label for="expert" class="experience-label">
                             <span class="exp-title">Expert</span>
                             <span class="exp-years">5+ years</span>
+                            <span class="exp-status"></span>
                         </label>
                     </div>
                 </div>
