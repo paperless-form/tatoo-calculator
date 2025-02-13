@@ -402,3 +402,15 @@ optgroup option {
     color: #666;
     margin-top: 5px;
 }
+
+/* <svg viewBox="0 0 100 100">
+                <path class="spiral" d="
+                    M 50 50
+                    m 0 -20
+                    a 20 20 0 1 0 0.1 0
+                    m 0 -10
+                    a 30 30 0 1 1 -0.1 0
+                    m 0 -10
+                    a 40 40 0 1 0 0.1 0
+                " />
+            </svg> */
