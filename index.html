@@ -7,26 +7,43 @@
     <title>Inkjin Price Estimator</title>
     <link rel="stylesheet" href="styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script src="script.js" defer></script>
 </head>
+<style>
+    .logo {
+        max-width: 100%;
+        border-radius: 50%;
+        animation: fading 2s infinite
+    }
+
+    .logo {
+        opacity: 1;
+        animation: fadeOutIn 2s infinite;
+        /* Repeats infinitely */
+    }
+
+    @keyframes fadeOutIn {
+
+        0%,
+        100% {
+            opacity: 1;
+            /* Fully visible */
+        }
+
+        50% {
+            opacity: 0;
+            /* Fully hidden */
+        }
+    }
+</style>
 
 <body>
     <div class="loading-overlay">
         <div class="celtic-loader">
-            <svg viewBox="0 0 100 100">
-                <path class="spiral" d="
-                    M 50 50
-                    m 0 -20
-                    a 20 20 0 1 0 0.1 0
-                    m 0 -10
-                    a 30 30 0 1 1 -0.1 0
-                    m 0 -10
-                    a 40 40 0 1 0 0.1 0
-                " />
-            </svg>
+            <img src="logo.jpg" alt="Inkjin Logo" class="logo">
         </div>
-        <p>Loading Price Estimator...</p>
+        <p>Loading Inkjin Price Estimator</p>
     </div>
 
     <div class="container">
@@ -38,15 +55,15 @@
         <div class="calculator-form">
             <div class="form-group">
                 <label>Country</label>
-                <select class="select">
-                    <option disabled selected>Select your geographic region...</option>
+                <select class="select country-select">
+                    <option disabled selected value="">Select your geographic region...</option>
                 </select>
             </div>
 
             <div class="form-group">
                 <label>Style</label>
-                <select class="select">
-                    <option disabled selected>Choose your preferred artistic style...</option>
+                <select class="select style-select">
+                    <option disabled selected value="">Choose your preferred artistic style...</option>
                 </select>
             </div>
 
@@ -54,15 +71,15 @@
                 <label>Color</label>
                 <div class="color-options">
                     <div class="color-option">
-                        <input type="radio" id="bw" name="color" value="black" checked>
+                        <input type="radio" id="bw" name="color" value="black" disabled>
                         <label for="bw" class="color-label">
                             <img src="grayscale-wheel.png" alt="Black & Gray" class="color-icon">
-                            Black & gray
+                            Black
                             <p class="color-status"></p>
                         </label>
                     </div>
                     <div class="color-option">
-                        <input type="radio" id="color" name="color" value="color">
+                        <input type="radio" id="color" name="color" value="color" disabled>
                         <label for="color" class="color-label">
                             <img src="color-wheel.png" alt="Color" class="color-icon">
                             Color (multicolor)
@@ -81,12 +98,13 @@
 
             <div class="form-group">
                 <label>Size (cm)</label>
-                <select id="sizeSelect">
-                    <option disabled selected>Choose your preferred size...</option>
+                <select id="sizeSelect" class="size-select">
+                    <option disabled selected value="">Choose your preferred size...</option>
                     <option value="0-5">Tiny (0-5 cm)</option>
                     <option value="5-10">Small (5-10 cm)</option>
                     <option value="10-20">Medium (10-20 cm)</option>
-                    <option value="20-40">Large (20-40 cm)</option>
+                    <option value="20-30">Large (20-30 cm)</option>
+                    <option value="30+">Extra Large (30+ cm)</option>
                 </select>
                 <span class="tooltip" id="sizeTooltip"></span>
             </div>
@@ -186,7 +204,7 @@
                         <input type="radio" id="intermediate" name="experience" value="5">
                         <label for="intermediate" class="experience-label">
                             <span class="exp-title">Intermediate</span>
-                            <span class="exp-years">2-5 years</span>
+                            <span class="exp-years">3-5 years</span>
                             <span class="exp-status"></span>
                         </label>
                     </div>
@@ -209,10 +227,11 @@
             </div>
 
             <div class="price-display">
-                <h2>Est. Price Range: €0 - €0</h2>
+                <h2>Select an Option to Reveal Pricing</h2>
             </div>
         </div>
     </div>
+
 </body>
 
 </html>
