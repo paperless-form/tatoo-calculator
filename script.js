@@ -5,12 +5,12 @@ $(document).ready(function () {
 
     $.get('https://script.google.com/macros/s/AKfycbyPa15xMDZutzk75Fj6-ITpwvx35C04sepRIKe4wikpH573JGK9ZYB-O2zVXUFTbKxn6g/exec', function (response) {
 
-        var countries = response.country;
-        for (var i = 0; i < countries.length; i++) {
-            if (countries[i][0] != "" && countries[i][0] != null) {
-                $('.country-select').append('<option value="' + countries[i][0] + '">' + countries[i][0] + '</option>');
-            }
-        }
+        // var countries = response.country;
+        // for (var i = 0; i < countries.length; i++) {
+        //     if (countries[i][0] != "" && countries[i][0] != null) {
+        //         $('.country-select').append('<option value="' + countries[i][0] + '">' + countries[i][0] + '</option>');
+        //     }
+        // }
 
         var styles = response.style;
         for (var i = 0; i < styles.length; i++) {
@@ -31,7 +31,7 @@ $(document).ready(function () {
 });
 
 function calculatePrice() {
-    const selectedCountry = $('.country-select').find(':selected').val();
+    // const selectedCountry = $('.country-select').find(':selected').val();
     const selectedStyle = $('.style-select').find(':selected').val();
     const selectedColor = $('input[name="color"]:checked').val();
     const selectedSize = $('.size-select').find(":selected").val();
@@ -41,10 +41,9 @@ function calculatePrice() {
     const priceDisplay = document.querySelector('.price-display h2');
 
     // Only calculate if both country and style are selected
-    if (selectedCountry && selectedStyle) {
+    if (selectedStyle) {
         // Filter data based on selected country, style, color, size, and experience
         const relevantData = data.filter(item =>
-            item[0] === selectedCountry &&
             (item[1] === selectedStyle || item[2].includes(selectedStyle)) &&
 
             (selectedColor === "black" ? item[3] === "Black" : item[3] !== "Black") &&
@@ -86,13 +85,13 @@ function toolTip() {
     }
 }
 
-$(document).on('change', '.country-select, .style-select', function () {
-    var country = $('.country-select').find(':selected').val();
+$(document).on('change', '.style-select', function () {
+    // var country = $('.country-select').find(':selected').val();
     var style = $('.style-select').find(':selected').val();
     var hasBlack = false, hasColor = false;
-    if (country != "" && style != "") {
+    if (style != "") {
         for (var i = 0; i < data.length; i++) {
-            if (data[i][0] == country && (data[i][1] == style || data[i][2].includes(style))) {
+            if ((data[i][1] == style || data[i][2].includes(style))) {
                 if (data[i][3].trim() == "Black" && hasBlack == false) {
                     hasBlack = true;
                 } else if (data[i][3].trim() != "Black" && hasColor == false) {
@@ -123,13 +122,13 @@ $(document).on('change', '.country-select, .style-select', function () {
 });
 
 $(document).on('change', 'input[name="color"]', function () {
-    var country = $('.country-select').find(':selected').val();
+    // var country = $('.country-select').find(':selected').val();
     var style = $('.style-select').find(':selected').val();
     var color = $('input[name="color"]:checked').val();
     var tiny_size = false, small_size = false, medium_size = false, large_size = false, extra_large_size = false;
-    if (country != "" && style != "" && color != undefined) {
+    if (style != "" && color != undefined) {
         for (var i = 0; i < data.length; i++) {
-            if (data[i][0] == country && (data[i][1] == style || data[i][2].includes(style)) && (color == "black" ? data[i][3].trim() == "Black" : data[i][3].trim() != "Black")) {
+            if ((data[i][1] == style || data[i][2].includes(style)) && (color == "black" ? data[i][3].trim() == "Black" : data[i][3].trim() != "Black")) {
                 if (parseInt(data[i][7]) >= parseInt(30)) {
                     console.log(data[i])
                 }
@@ -189,18 +188,18 @@ $(document).on('change', 'input[name="color"]', function () {
 $(document).on('change', '.size-select', function () {
     toolTip();
     var size = $('.size-select').find(':selected').val();
-    var country = $('.country-select').find(':selected').val();
+    // var country = $('.country-select').find(':selected').val();
     var style = $('.style-select').find(':selected').val();
     var color = $('input[name="color"]:checked').val();
 
-    if (country != "" && style != "" && color != undefined && size != "") {
+    if (style != "" && color != undefined && size != "") {
         var min_size = parseInt(size.split('-')[0]);
         var max_size = (size.split('-')[1] == undefined ? undefined : parseInt(size.split('-')[1]));
 
         var beginner_experience = false, intermediate_experience = false, expert_experience = false;
 
         for (var i = 0; i < data.length; i++) {
-            if (data[i][0] == country && (data[i][1] == style || data[i][2].includes(style)) && (color == "black" ? data[i][3].trim() == "Black" : data[i][3].trim() != "Black") && (max_size != undefined ? parseInt(data[i][7]) >= min_size && parseInt(data[i][7]) <= max_size : parseInt(data[i][7]) >= min_size)) {
+            if ((data[i][1] == style || data[i][2].includes(style)) && (color == "black" ? data[i][3].trim() == "Black" : data[i][3].trim() != "Black") && (max_size != undefined ? parseInt(data[i][7]) >= min_size && parseInt(data[i][7]) <= max_size : parseInt(data[i][7]) >= min_size)) {
                 if (parseInt(data[i][9]) >= 0 && parseInt(data[i][9]) <= 2 && beginner_experience == false) {
                     beginner_experience = true;
                 } else if (parseInt(data[i][9]) >= 3 && parseInt(data[i][9]) <= 5 && intermediate_experience == false) {

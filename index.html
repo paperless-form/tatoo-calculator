@@ -36,6 +36,10 @@
             /* Fully hidden */
         }
     }
+
+    .d-none {
+        display: none;
+    }
 </style>
 
 <body>
@@ -53,7 +57,7 @@
         </div>
 
         <div class="calculator-form">
-            <div class="form-group">
+            <div class="form-group d-none">
                 <label>Country</label>
                 <select class="select country-select">
                     <option disabled selected value="">Select your geographic region...</option>
@@ -109,7 +113,7 @@
                 <span class="tooltip" id="sizeTooltip"></span>
             </div>
 
-            <div class="form-group">
+            <div class="form-group d-none">
                 <label>Placement</label>
                 <select>
                     <option disabled selected>Where on your body do you want the tattoo?</option>
