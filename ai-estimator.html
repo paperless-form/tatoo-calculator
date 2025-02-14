@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inkjin Price Estimator</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/dropify@0.2.2/dist/js/dropify.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/dropify@0.2.2/dist/css/dropify.min.css">
+</head>
+<style>
+    .logo {
+        max-width: 100%;
+        border-radius: 50%;
+        animation: fading 2s infinite
+    }
+
+    .logo {
+        opacity: 1;
+        animation: fadeOutIn 2s infinite;
+        /* Repeats infinitely */
+    }
+
+    @keyframes fadeOutIn {
+
+        0%,
+        100% {
+            opacity: 1;
+            /* Fully visible */
+        }
+
+        50% {
+            opacity: 0;
+            /* Fully hidden */
+        }
+    }
+
+    .d-none {
+        display: none;
+    }
+
+    .dropify-wrapper .dropify-message p {
+        font-size: 18px !important;
+    }
+
+    .dropify {
+        height: 100% !important;
+    }
+
+    .price-display {
+        text-align: left !important;
+    }
+</style>
+
+<body>
+    <div class="loading-overlay">
+        <div class="celtic-loader">
+            <img src="logo.jpg" alt="Inkjin Logo" class="logo">
+        </div>
+        <p>Loading Inkjin Price Estimator</p>
+    </div>
+
+    <div class="container">
+        <div class="header">
+            <h1>Inkjin AI Price Estimator</h1>
+            <button class="clear-btn d-none">Clear All</button>
+        </div>
+
+        <div class="calculator-form">
+
+            <div id="ai-options">
+                <div class="form-group">
+                    <label>Upload Tattoo Reference</label>
+                    <input type="file" class="dropify" id="tattooImage" accept="image/*">
+                </div>
+            </div>
+
+            <div class="price-display">
+                <h2>Upload to Reveal Pricing</h2>
+            </div>
+
+            <div class="form-group expert-artist d-none">
+                <label>Artist Experience</label>
+                <div class="experience-options">
+                    <div class="experience-option">
+                        <label for="beginner" class="experience-label">
+                            <span class="exp-title">Beginner</span>
+                            <span class="exp-years">0-2 years</span>
+                            <span class="beginner-exp-status"></span>
+                        </label>
+                    </div>
+                    <div class="experience-option">
+                        <label for="intermediate" class="experience-label">
+                            <span class="exp-title">Intermediate</span>
+                            <span class="exp-years">3-5 years</span>
+                            <span class="intermediate-exp-status"></span>
+                        </label>
+                    </div>
+                    <div class="experience-option">
+                        <label for="expert" class="experience-label">
+                            <span class="exp-title">Expert</span>
+                            <span class="exp-years">5+ years</span>
+                            <span class="expert-exp-status"></span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+<script>
+    const loadingOverlay = document.querySelector('.loading-overlay');
+    const container = document.querySelector('.container');
+    $(document).ready(function () {
+        $('.dropify').dropify();
+
+        // Handle image upload
+        $('#tattooImage').on('change', function (event) {
+            const file = event.target.files[0];
+            const reader = new FileReader();
+
+            reader.onloadend = function () {
+                const base64Image = reader.result.split(',')[1];
+                $('.expert-artist').addClass('d-none');
+                // Show loading state
+                $('.price-display h2').text('Analyzing image...');
+
+                $.ajax({
+                    url: 'https://script.google.com/macros/s/AKfycbyPa15xMDZutzk75Fj6-ITpwvx35C04sepRIKe4wikpH573JGK9ZYB-O2zVXUFTbKxn6g/exec',
+                    type: 'POST',
+                    data: {
+                        image: base64Image
+                    },
+                    success: function (response) {
+                        console.log('Raw response:', response);
+                        try {
+                            const data = response.candidates[0].content.parts[0].text
+                            updateUIWithResults(data.trim().replace(/^```json\n/, '').replace(/\n```$/, ''));
+                        } catch (error) {
+                            console.error('Error parsing JSON:', error);
+                            $('.price-display h2').text('Error processing response. Please try again.');
+                        }
+                    },
+                    error: function (error) {
+                        console.error('Error:', error);
+                        $('.price-display h2').text('Error analyzing image. Please try again.');
+                    }
+                });
+            };
+
+            if (file) {
+                reader.readAsDataURL(file);
+            }
+        });
+
+        function updateUIWithResults(responseText) {
+            // Parse the JSON string from the response text
+            let data = responseText;
+            const json_data = JSON.parse(responseText);
+            console.log(json_data);
+            console.log(json_data["Estimated prices"].Beginner.min);
+            $('.price-display h2').html(`
+                <div>Style: ${json_data.Style.join(', ')}</div>
+                <div>Size: ${json_data["Estimated size in cm"]}</div>
+                <div>Color: ${json_data["Color scheme"]}</div>
+                <div>Recommended Placement: ${json_data["Body part"]}</div>
+            `);
+            $('.expert-artist').removeClass('d-none');
+
+            $('.beginner-exp-status').text(`€` + `${json_data["Estimated prices"].Beginner.min}` + ` - €` + `${json_data["Estimated prices"].Beginner.max}`);
+            $('.intermediate-exp-status').text(`€` + `${json_data["Estimated prices"].Intermediate.min}` + ` - €` + `${json_data["Estimated prices"].Intermediate.max}`);
+            $('.expert-exp-status').text(`€` + `${json_data["Estimated prices"].Expert.min}` + ` - €` + `${json_data["Estimated prices"].Expert.max}`);
+
+            // Update price display with the parsed data
+            // $('.price-display h2').html(`
+            //     <div>Style: ${data.Style.join(', ')}</div>
+            //     <div>Size: ${data['Estimated size in cm']}</div>
+            //     <div>Color: ${data['Color scheme']}</div>
+            //     <div>Recommended Placement: ${data['Body part']}</div>
+            //     <div>Estimated Prices:</div>
+            //     <div>Beginner: ${data['Estimated prices'].Beginner.currency} ${data['Estimated prices'].Beginner.min} - ${data['Estimated prices'].Beginner.max}</div>
+            //     <div>Intermediate: ${data['Estimated prices'].Intermediate.currency} ${data['Estimated prices'].Intermediate.min} - ${data['Estimated prices'].Intermediate.max}</div>
+            //     <div>Expert: ${data['Estimated prices'].Expert.currency} ${data['Estimated prices'].Expert.min} - ${data['Estimated prices'].Expert.max}</div>
+            //     <div>Notes: ${data.Notes.join(' ')}</div>
+            // `);
+        }
+
+        loadingOverlay.style.opacity = '0';
+        container.classList.add('visible');
+        setTimeout(() => {
+            loadingOverlay.style.display = 'none';
+        }, 500);
+    });
+</script>
+
+</html>
