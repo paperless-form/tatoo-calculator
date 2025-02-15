@@ -49,10 +49,6 @@
     .dropify {
         height: 100% !important;
     }
-
-    .price-display {
-        text-align: left !important;
-    }
 </style>
 
 <body>
@@ -79,7 +75,7 @@
             </div>
 
             <div class="price-display">
-                <h2>Upload to Reveal Pricing</h2>
+                <h2>Upload Image to Reveal Pricing</h2>
             </div>
 
             <div class="form-group expert-artist d-none">
@@ -162,31 +158,105 @@
             let data = responseText;
             const json_data = JSON.parse(responseText);
             console.log(json_data);
-            console.log(json_data["Estimated prices"].Beginner.min);
+
+            const indexes = Object.entries(json_data);
+
+            const values = indexes.map((subArray) => subArray[1]);
+            var style = '', size = '', color = '', placement = '', beginner = '', intermediate = '', expert = '';
+            if (Array.isArray(values[0])) {
+                style = values[0].join(', ')
+            }
+            else {
+                style = values[0]
+            }
+
+            if (Array.isArray(values[1])) {
+                size = values[1].join(', ')
+            }
+            else {
+                size = values[1]
+            }
+
+            if (Array.isArray(values[2])) {
+                color = values[2].join(', ')
+            }
+            else {
+                color = values[2]
+            }
+
+            if (Array.isArray(values[3])) {
+                placement = values[3].join(', ')
+            }
+            else {
+                placement = values[3]
+            }
+
+            $('.beginner-exp-status').text(``)
+            $('.intermediate-exp-status').text(``)
+            $('.expert-exp-status').text(``)
+
+            if (values[4]["Beginner (0-2 years)"]) {
+                $('.expert-artist').removeClass('d-none');
+
+                if (values[4]["Beginner (0-2 years)"].min) {
+                    $('.expert-artist').removeClass('d-none');
+                    $('.beginner-exp-status').text(`€` + `${values[4]["Beginner (0-2 years)"].min}` + ` - €` + `${values[4]["Beginner (0-2 years)"].max}`);
+                    $('.intermediate-exp-status').text(`€` + `${values[4]["Intermediate (3-5 years)"].min}` + ` - €` + `${values[4]["Intermediate (3-5 years)"].max}`);
+                    $('.expert-exp-status').text(`€` + `${values[4]["Expert (5+ years)"].min}` + ` - €` + `${values[4]["Expert (5+ years)"].max}`);
+                }
+                else {
+                    $('.expert-artist').removeClass('d-none');
+                    var beginner_min = values[4]["Beginner (0-2 years)"].split('-')[0].replace('$', '').replace('+', '').replace('USD', '');
+                    var beginner_max = values[4]["Beginner (0-2 years)"].split('-')[1].replace('$', '').replace('+', '').replace('USD', '');
+                    $('.beginner-exp-status').text(`€` + `${beginner_min}` + ` - €` + `${beginner_max}`);
+
+                    var intermediate_min = values[4]["Intermediate (3-5 years)"].split('-')[0].replace('$', '').replace('+', '').replace('USD', '');
+                    var intermediate_max = values[4]["Intermediate (3-5 years)"].split('-')[1].replace('$', '').replace('+', '').replace('USD', '');
+                    $('.intermediate-exp-status').text(`€` + `${intermediate_min}` + ` - €` + `${intermediate_max}`);
+
+                    var expert_min = values[4]["Expert (5+ years)"].split('-')[0].replace('$', '').replace('+', '').replace('USD', '');
+                    var expert_max = (values[4]["Expert (5+ years)"].split('-')[1] == undefined ? '' : values[4]["Expert (5+ years)"].split('-')[1].replace('$', '').replace('+', '').replace('USD', ''));
+                    expert_max == "" ? $('.expert-exp-status').text(`€` + `${expert_min}+`) : $('.expert-exp-status').text(`€` + `${expert_min}` + ` - €` + `${expert_max}`);
+                }
+
+            }
+            else if (values[4]["Beginner"]) {
+                $('.expert-artist').removeClass('d-none');
+
+                if (values[4]["Beginner"].min) {
+                    $('.expert-artist').removeClass('d-none');
+                    $('.beginner-exp-status').text(`€` + `${values[4]["Beginner"].min}` + ` - €` + `${values[4]["Beginner"].max}`);
+                    $('.intermediate-exp-status').text(`€` + `${values[4]["Intermediate"].min}` + ` - €` + `${values[4]["Intermediate"].max}`);
+                    $('.expert-exp-status').text(`€` + `${values[4]["Expert"].min}` + ` - €` + `${values[4]["Expert"].max}`);
+                }
+                else {
+                    $('.expert-artist').removeClass('d-none');
+                    var beginner_min = values[4]["Beginner"].split('-')[0].replace('$', '').replace('+', '').replace('USD', '');
+                    var beginner_max = values[4]["Beginner"].split('-')[1].replace('$', '').replace('+', '').replace('USD', '');
+                    $('.beginner-exp-status').text(`€` + `${beginner_min}` + ` - €` + `${beginner_max}`);
+
+                    var intermediate_min = values[4]["Intermediate"].split('-')[0].replace('$', '').replace('+', '').replace('USD', '');
+                    var intermediate_max = values[4]["Intermediate"].split('-')[1].replace('$', '').replace('+', '').replace('USD', '');
+                    $('.intermediate-exp-status').text(`€` + `${intermediate_min}` + ` - €` + `${intermediate_max}`);
+
+                    var expert_min = values[4]["Expert"].split('-')[0].replace('$', '').replace('+', '').replace('USD', '');
+                    var expert_max = (values[4]["Expert"].split('-')[1] == undefined ? '' : values[4]["Expert"].split('-')[1].replace('$', '').replace('+', '').replace('USD', ''));
+                    expert_max == "" ? $('.expert-exp-status').text(`€` + `${expert_min}+`) : $('.expert-exp-status').text(`€` + `${expert_min}` + ` - €` + `${expert_max}`);
+                }
+            }
+            // if (Array.isArray(values[4])) {
+            //     beginner = values[4].join(', ')
+            // }
+            // else {
+            //     beginner = values[4]
+            // }
             $('.price-display h2').html(`
-                <div>Style: ${json_data.Style.join(', ')}</div>
-                <div>Size: ${json_data["Estimated size in cm"]}</div>
-                <div>Color: ${json_data["Color scheme"]}</div>
-                <div>Recommended Placement: ${json_data["Body part"]}</div>
+                <div>Style: ${style}</div>
+                <div>Size: ${size}</div>
+                <div>Color: ${color}</div>
+                <div>Placement: ${placement}</div>  
             `);
-            $('.expert-artist').removeClass('d-none');
 
-            $('.beginner-exp-status').text(`€` + `${json_data["Estimated prices"].Beginner.min}` + ` - €` + `${json_data["Estimated prices"].Beginner.max}`);
-            $('.intermediate-exp-status').text(`€` + `${json_data["Estimated prices"].Intermediate.min}` + ` - €` + `${json_data["Estimated prices"].Intermediate.max}`);
-            $('.expert-exp-status').text(`€` + `${json_data["Estimated prices"].Expert.min}` + ` - €` + `${json_data["Estimated prices"].Expert.max}`);
-
-            // Update price display with the parsed data
-            // $('.price-display h2').html(`
-            //     <div>Style: ${data.Style.join(', ')}</div>
-            //     <div>Size: ${data['Estimated size in cm']}</div>
-            //     <div>Color: ${data['Color scheme']}</div>
-            //     <div>Recommended Placement: ${data['Body part']}</div>
-            //     <div>Estimated Prices:</div>
-            //     <div>Beginner: ${data['Estimated prices'].Beginner.currency} ${data['Estimated prices'].Beginner.min} - ${data['Estimated prices'].Beginner.max}</div>
-            //     <div>Intermediate: ${data['Estimated prices'].Intermediate.currency} ${data['Estimated prices'].Intermediate.min} - ${data['Estimated prices'].Intermediate.max}</div>
-            //     <div>Expert: ${data['Estimated prices'].Expert.currency} ${data['Estimated prices'].Expert.min} - ${data['Estimated prices'].Expert.max}</div>
-            //     <div>Notes: ${data.Notes.join(' ')}</div>
-            // `);
         }
 
         loadingOverlay.style.opacity = '0';
