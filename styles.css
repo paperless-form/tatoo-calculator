@@ -39,7 +39,8 @@ h1 {
     font-weight: 600;
 }
 
-.clear-btn {
+.clear-btn,
+.clear-btn-ai {
     background: transparent;
     border: 1px solid rgba(255, 255, 255, 0.3);
     color: white;
@@ -203,7 +204,8 @@ input[type="radio"]:checked+.color-label {
     border-color: #482e8e;
 }
 
-.price-display {
+.price-display,
+.ai-price-display {
     margin-top: 30px;
     text-align: center;
     padding: 20px;
@@ -211,7 +213,8 @@ input[type="radio"]:checked+.color-label {
     border-radius: 8px;
 }
 
-.price-display h2 {
+.price-display h2,
+.ai-price-display h2 {
     color: #482e8e;
     font-size: 1.3rem;
 }
@@ -229,7 +232,8 @@ input[type="radio"]:checked+.color-label {
         font-size: 1.2rem;
     }
 
-    .clear-btn {
+    .clear-btn,
+    .clear-btn-ai {
         padding: 6px 12px;
         font-size: 0.8rem;
     }
@@ -250,7 +254,8 @@ input[type="radio"]:checked+.color-label {
         flex: 100%;
     }
 
-    .price-display h2 {
+    .price-display h2,
+    .ai-price-display h2 {
         font-size: 1.1rem;
     }
 }
