@@ -102,7 +102,7 @@
                 <h2>Upload Image to Reveal Pricing</h2>
             </div>
 
-            <div class="form-group expert-artist d-none">
+            <div class="form-group expert-artist-hide d-none">
                 <label>Artist Experience (Location: Greece)</label>
                 <div class="experience-options">
                     <div class="experience-option">
@@ -416,8 +416,8 @@
             const relevantData = fetching_data.filter(item =>
                 (style == "Japanese Traditional" || style == "Neo-Japanese" ? item[1] == "Japanese Traditional" || item[1] == "Neo-Japanese" || item[2].includes("Japanese Traditional") || item[2].includes("Neo-Japanese") : style == "Old School (Traditional)" || style == "Neo-Traditional" ? item[1] == "Old School (Traditional)" || item[1] == "Neo-Traditional" || item[2].includes("Old School (Traditional)") || item[2].includes("Neo-Traditional") : style == "Anime & Manga" || style == "Cartoon & Comics" ? item[1] == "Anime & Manga" || item[1] == "Cartoon & Comics" || item[2].includes("Anime & Manga") || item[2].includes("Cartoon & Comics") : style == "Color" || style == "New School" ? item[1] == "Color" || item[1] == "New School" || item[2].includes("Color") || item[2].includes("New School") : style == "Blackwork" || style == "Black & Gray" || style == "Black" ? item[1] == "Blackwork" || item[1] == "Black & Gray" || item[1] == "Black" || item[2].includes("Blackwork") || item[2].includes("Black & Gray") || item[2].includes("Black") : item[1] === selectedStyle || item[2].includes(selectedStyle)) &&
                 (selectedColor === "black" ? item[3].trim() === "Black" : item[3].trim() !== "Black") &&
-                (selectedSize == "0-5" ? parseInt(item[7]) >= parseInt(0) && parseInt(item[7]) <= parseInt(5) : selectedSize == "5-10" ? parseInt(item[7]) >= parseInt(5) && parseInt(item[7]) <= parseInt(10) : selectedSize == "10-20" ? parseInt(item[7]) >= parseInt(10) && parseInt(item[7]) <= parseInt(20) : selectedSize == "20-30" ? parseInt(item[7]) >= parseInt(20) && parseInt(item[7]) <= parseInt(30) : parseInt(item[7]) >= parseInt(30)) &&
-                (selectedExperience == "2" ? parseInt(item[9]) <= parseInt(2) : selectedExperience == "5" ? parseInt(item[9]) >= parseInt(3) && parseInt(item[9]) <= parseInt(5) : parseInt(item[9]) >= parseInt(6))
+                (selectedSize == "0-5" ? parseInt(item[7]) >= parseInt(0) && parseInt(item[7]) <= parseInt(5) : selectedSize == "5-10" ? parseInt(item[7]) >= parseInt(5) && parseInt(item[7]) <= parseInt(10) : selectedSize == "10-20" ? parseInt(item[7]) >= parseInt(10) && parseInt(item[7]) <= parseInt(20) : selectedSize == "20-30" ? parseInt(item[7]) >= parseInt(20) && parseInt(item[7]) <= parseInt(30) : parseInt(item[7]) >= parseInt(30))
+                // (selectedExperience == "2" ? parseInt(item[9]) <= parseInt(2) : selectedExperience == "5" ? parseInt(item[9]) >= parseInt(3) && parseInt(item[9]) <= parseInt(5) : parseInt(item[9]) >= parseInt(6))
 
             );
             if (relevantData.length > 0) {
