@@ -41,7 +41,7 @@
     }
 
     .d-none {
-        display: none;
+        display: none !important;
     }
 
     .dropify-wrapper .dropify-message p {
@@ -88,6 +88,13 @@
 
     .store-button:hover img {
         opacity: 0.8;
+    }
+
+    .download-inkjin {
+        text-align: center;
+        margin-top: 20px;
+        font-size: 20px;
+        font-weight: bold;
     }
 </style>
 
@@ -151,20 +158,23 @@
             <div class="price-display d-none">
                 <h2></h2>
             </div>
+            <div class="hide-button-content d-none download-inkjin text-center">
+                <b>Download Inkjin!</b>
+            </div>
+            <span class="hide-button-content d-none tooltip" id="sizeTooltip" style="margin-top: 10px; font-size: 16px;">Try 2,000+ original designs from top artists using AR and see how they look on you!</span>
+            <div class="hide-button-content d-none app-store-buttons">
+                <a href="https://apps.apple.com/us/app/inkjin/id6670313970" class="store-button" target="_blank">
+                    <img src="https://inkjin.com/1/images/AppStore-Button.webp" alt="Download on the App Store">
+                </a>
+                <a href="https://play.google.com/store/apps/details?id=com.inkjin.apk&pli=1" class="store-button"
+                    target="_blank">
+                    <img src="https://inkjin.com/1/images/GooglePlay-Button.webp" alt="Get it on Google Play">
+                </a>
+            </div>
         </div>
-        <span class="tooltip" id="sizeTooltip">This is an initial version, and we are continuously
-            working to enhance and refine the results of
-            our model to achieve even greater accuracy and performance.</span>
+        <span class="tooltip" id="sizeTooltip">We are constantly working to improve the results of our model to deliver even greater accuracy and performance.</span>
 
-        <div class="app-store-buttons">
-            <a href="https://apps.apple.com/us/app/inkjin/id6670313970" class="store-button" target="_blank">
-                <img src="https://inkjin.com/1/images/AppStore-Button.webp" alt="Download on the App Store">
-            </a>
-            <a href="https://play.google.com/store/apps/details?id=com.inkjin.apk&pli=1" class="store-button"
-                target="_blank">
-                <img src="https://inkjin.com/1/images/GooglePlay-Button.webp" alt="Get it on Google Play">
-            </a>
-        </div>
+        
     </div>
 
 
@@ -198,6 +208,7 @@
             reader.onloadend = function () {
                 const base64Image = reader.result.split(',')[1];
                 $('.expert-artist').addClass('d-none');
+                $('.hide-button-content').addClass('d-none');
                 // Show loading state
                 $('.ai-price-display h2').text('Analyzing image...');
 
@@ -368,6 +379,8 @@
             // else {
             //     beginner = values[4]
             // }
+
+            $('.hide-button-content').removeClass('d-none');
             $('.ai-price-display h2').html(`
                 <div>Style: ${style}</div>
                 <div>Size: ${size}cm</div>
@@ -473,6 +486,7 @@
 
         $('.ai-price-display h2').text('Upload Image to Reveal Pricing');
         $('.dropify-clear').trigger('click');
+        $('.hide-button-content').addClass('d-none');
     })
 </script>
 
